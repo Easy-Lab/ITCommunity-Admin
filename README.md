@@ -6,6 +6,7 @@ ITCommunity is a project of two students from IPSSI. Their goal? To create a com
 **Clone the repository**
 
 ```
+https://github.com/Easy-Lab/ITCommunity-Front.git
 ```
 
 ## Install the dependencies
