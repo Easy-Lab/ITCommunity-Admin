@@ -1,4 +1,5 @@
-##Description
+## Description
+
 ITCommunity is a project of two students from IPSSI. Their goal? To create a community platform between IT enthusiasts and put them in touch with people in need of advice!
 
 ## Installation
@@ -6,12 +7,11 @@ ITCommunity is a project of two students from IPSSI. Their goal? To create a com
 **Clone the repository**
 
 ```
-https://github.com/Easy-Lab/ITCommunity-Front.git
+https://github.com/Easy-Lab/ITCommunity-Admin.git
 ```
 
 ## Install the dependencies
 ```bash
-cd quasar-admin-crm
 npm install
 ```
 
