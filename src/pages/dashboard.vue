@@ -7,7 +7,7 @@
             <div class="row">
               <div class="col-10">
                 <div class="text-h6">Users</div>
-                <div class="text-h5">{{ users.pagination.total }}</div>
+                <div class="text-h5">{{ (nb_users)?nb_users:'Loading' }}</div>
               </div>
               <div class="col-2">
                 <q-icon name="trending_up" size="62px"/>
@@ -22,7 +22,7 @@
             <div class="row">
               <div class="col-10">
                 <div class="text-h6">Review</div>
-                <div class="text-h5">{{ reviews.pagination.total }}</div>
+                <div class="text-h5">{{ (nb_reviews)?nb_reviews:'Loading' }}</div>
               </div>
               <div class="col-2">
                 <q-icon name="far fa-dot-circle" size="62px"/>
@@ -159,6 +159,8 @@
                 users: [],
                 topTenUsers: [],
                 reviews: [],
+                nb_users: '',
+                nb_reviews: '',
             };
         },
         methods: {
@@ -166,7 +168,7 @@
                 // naive encoding to csv format
                 const content = [this.columns.map(col => wrapCsvValue(col.label))]
                     .concat(
-                        this.data.map(row =>
+                        this.topTenUsers.map(row =>
                             this.columns
                                 .map(col =>
                                     wrapCsvValue(
@@ -181,7 +183,7 @@
                     )
                     .join("\r\n");
 
-                const status = exportFile("activity.csv", content, "text/csv");
+                const status = exportFile("topTenUsers.csv", content, "text/csv");
 
                 if (status !== true) {
                     this.$q.notify({
@@ -212,6 +214,8 @@
                 return UserService.getUsers().then(
                     response => {
                         this.users = response.data;
+                        localStorage.setItem('nb_users', JSON.stringify(response.data.pagination.total));
+                        this.nb_users = JSON.parse(localStorage.getItem('nb_users'));
                         return this.users;
                     },
                     error => {
@@ -249,7 +253,9 @@
             getReviews() {
                 return ReviewsService.getReviews().then(
                     response => {
-                        this.reviews = response.data
+                        this.reviews = response.data;
+                        localStorage.setItem('nb_reviews', JSON.stringify(response.data.pagination.total));
+                        this.nb_reviews = JSON.parse(localStorage.getItem('nb_users'));
                         return this.reviews
                     },
                     error => {
@@ -270,15 +276,13 @@
                     this.topTenUser();
                     this.getUsers();
                     this.getReviews();
-                }, 60000);
+                }, 10000);
             }
         },
         mounted() {
             this.fetchData();
         },
         created() {
-            this.exportTable();
-            this.handleLogout();
             this.topTenUser();
             this.getUsers();
             this.getReviews();

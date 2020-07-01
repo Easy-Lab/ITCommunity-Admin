@@ -238,7 +238,7 @@
                 // naive encoding to csv format
                 const content = [this.columns.map(col => wrapCsvValue(col.label))]
                     .concat(
-                        this.data.map(row =>
+                        this.users.map(row =>
                             this.columns
                                 .map(col =>
                                     wrapCsvValue(
@@ -254,7 +254,7 @@
                     .join("\r\n");
 
                 const status = exportFile(
-                    "employee_salary_list.csv",
+                    "users_list.csv",
                     content,
                     "text/csv"
                 );

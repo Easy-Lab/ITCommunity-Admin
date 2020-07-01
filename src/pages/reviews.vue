@@ -216,19 +216,11 @@
             };
         },
         methods: {
-            showUser(username, firstname, lastname, city, zipcode) {
-                this.user_dialog = true
-                this.username = username
-                this.firstname = firstname
-                this.lastname = lastname
-                this.city = city
-                this.zipcode = zipcode
-            },
             exportTable() {
                 // naive encoding to csv format
                 const content = [this.columns.map(col => wrapCsvValue(col.label))]
                     .concat(
-                        this.data.map(row =>
+                        this.reviews.map(row =>
                             this.columns
                                 .map(col =>
                                     wrapCsvValue(
@@ -243,11 +235,7 @@
                     )
                     .join("\r\n");
 
-                const status = exportFile(
-                    "employee_salary_list.csv",
-                    content,
-                    "text/csv"
-                );
+                const status = exportFile("reviews.csv", content, "text/csv");
 
                 if (status !== true) {
                     this.$q.notify({
@@ -257,17 +245,25 @@
                     });
                 }
             },
+            showUser(username, firstname, lastname, city, zipcode) {
+                this.user_dialog = true;
+                this.username = username;
+                this.firstname = firstname;
+                this.lastname = lastname;
+                this.city = city;
+                this.zipcode = zipcode
+            },
             getReviews() {
                 return ReviewsService.getReviewsUsers().then(
                     response => {
-                        this.reviews = response.data
+                        this.reviews = response.data;
                         return this.reviews
                     },
                     error => {
                         this.user =
                             (error.response && error.response.data) ||
                             error.message ||
-                            error.toString()
+                            error.toString();
                         console.log(
                             (error.response && error.response.data) ||
                             error.message ||
