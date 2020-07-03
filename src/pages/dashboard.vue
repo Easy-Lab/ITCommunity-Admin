@@ -203,10 +203,7 @@
                         this.message =
                             (error.response && error.response.data) ||
                             error.message ||
-                            error.toString()
-                        console.log((error.response && error.response.data) ||
-                            error.message ||
-                            error.toString());
+                            error.toString();
                     }
                 );
             },
@@ -223,11 +220,6 @@
                             (error.response && error.response.data) ||
                             error.message ||
                             error.toString();
-                        console.log(
-                            (error.response && error.response.data) ||
-                            error.message ||
-                            error.toString()
-                        );
                     }
                 );
             },
@@ -242,11 +234,6 @@
                             (error.response && error.response.data) ||
                             error.message ||
                             error.toString();
-                        console.log(
-                            (error.response && error.response.data) ||
-                            error.message ||
-                            error.toString()
-                        );
                     }
                 );
             },
@@ -259,15 +246,10 @@
                         return this.reviews
                     },
                     error => {
-                        this.user =
+                        this.reviews =
                             (error.response && error.response.data) ||
                             error.message ||
-                            error.toString()
-                        console.log(
-                            (error.response && error.response.data) ||
-                            error.message ||
-                            error.toString()
-                        );
+                            error.toString();
                     }
                 );
             },

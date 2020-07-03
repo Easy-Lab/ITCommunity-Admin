@@ -23,6 +23,10 @@ class UserService {
   getUserReviews(username) {
     return axios.get(API_URL + 'users/' + username + '/reviews', {headers: authHeader()});
   }
+
+  deleteUser(hash) {
+    return axios.delete(API_URL + 'users/' + hash, {headers: authHeader()});
+  }
 }
 
 export default new UserService();

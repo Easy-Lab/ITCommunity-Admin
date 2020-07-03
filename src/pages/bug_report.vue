@@ -72,7 +72,12 @@
         <q-td :props="props">
           <div class="q-gutter-sm">
             <q-btn dense color="primary" icon="edit"/>
-            <q-btn dense color="red" icon="delete"/>
+            <q-btn
+              @click="deleteBugReport(props.row.hash)"
+              dense
+              color="red"
+              icon="delete"
+            />
           </div>
         </q-td>
       </template>
@@ -214,11 +219,31 @@
                             (error.response && error.response.data) ||
                             error.message ||
                             error.toString();
-                        console.log(
+                    }
+                );
+            },
+            deleteBugReport(hash) {
+                return BugReportService.deleteBugReport(hash).then(
+                    response => {
+                        BugReportService.getBugReports().then(
+                            response => {
+                                this.bugReports = response.data;
+                                this.$q.notify("Bug Report deleted.");
+                                return this.bugReports
+                            },
+                            error => {
+                                this.bugReports =
+                                    (error.response && error.response.data) ||
+                                    error.message ||
+                                    error.toString();
+                            }
+                        )
+                    },
+                    error => {
+                        this.bugReports =
                             (error.response && error.response.data) ||
                             error.message ||
-                            error.toString()
-                        );
+                            error.toString();
                     }
                 );
             },

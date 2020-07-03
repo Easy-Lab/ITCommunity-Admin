@@ -54,8 +54,6 @@
   </q-layout>
 </template>
 
-<script type="text/javascript">
-</script>
 <script>
     import User from "../models/user";
     import {required, email} from "vuelidate/lib/validators";
@@ -103,11 +101,6 @@
                                 (error.response && error.response.data) ||
                                 error.message ||
                                 error.toString();
-                            console.log(
-                                (error.response && error.response.data) ||
-                                error.message ||
-                                error.toString()
-                            );
                         }
                     );
                 }

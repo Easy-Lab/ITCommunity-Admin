@@ -57,7 +57,7 @@
       <template v-slot:body-cell-detail="props">
         <q-td :props="props">
           <q-btn
-            @click="showUser(props.row.username,props.row.firstname,props.row.lastname,props.row.city,props.row.zipcode, props.row.reviews)"
+            @click="showUser(props.row.username,props.row.firstname,props.row.lastname,props.row.city,props.row.zipcode, props.row.reviews, props.row.hash)"
             dense
             round
             color="secondary"
@@ -68,8 +68,17 @@
       <template v-slot:body-cell-action="props">
         <q-td :props="props">
           <div class="q-gutter-sm">
-            <q-btn dense color="primary" icon="edit"/>
-            <q-btn dense color="red" icon="delete"/>
+            <q-btn
+              @click=""
+              dense color="primary"
+              icon="edit"
+            />
+            <q-btn
+              @click="deleteUser(props.row.hash)"
+              dense
+              color="red"
+              icon="delete"
+            />
           </div>
         </q-td>
       </template>
@@ -87,7 +96,8 @@
             <div class="text-overline">{{ city }} {{ zipcode }}</div>
             <div class="text-h5 q-mt-sm q-mb-xs">{{ firstname }} {{ lastname }}</div>
             <div class="text-caption">
-              <q-input :disable="true" filled v-model="firstname" label="Prénom"/>
+              <q-input :disable="true" filled v-model="firstname" label="First name"/>
+              <q-input :disable="true" filled v-model="hash" label="Hash"/>
             </div>
           </q-card-section>
 
@@ -156,6 +166,7 @@
                 city: "",
                 zipcode: "",
                 filter: "",
+                hash: "",
                 mode: "list",
                 user_dialog: false,
                 columns: [
@@ -225,7 +236,7 @@
             };
         },
         methods: {
-            showUser(username, firstname, lastname, city, zipcode, reviews) {
+            showUser(username, firstname, lastname, city, zipcode, reviews, hash) {
                 this.user_dialog = true;
                 this.username = username;
                 this.firstname = firstname;
@@ -233,6 +244,31 @@
                 this.city = city;
                 this.zipcode = zipcode;
                 this.reviews = reviews;
+                this.hash = hash;
+            },
+            deleteUser(hash) {
+                return UserService.deleteUser(hash).then(
+                    response => {
+                        UserService.getUsersReviews().then(
+                            response => {
+                                this.users = response.data
+                                return this.users
+                            },
+                            error => {
+                                this.user =
+                                    (error.response && error.response.data) ||
+                                    error.message ||
+                                    error.toString();
+                            }
+                        )
+                    },
+                    error => {
+                        this.user =
+                            (error.response && error.response.data) ||
+                            error.message ||
+                            error.toString();
+                    }
+                );
             },
             exportTable() {
                 // naive encoding to csv format
@@ -277,12 +313,7 @@
                         this.user =
                             (error.response && error.response.data) ||
                             error.message ||
-                            error.toString()
-                        console.log(
-                            (error.response && error.response.data) ||
-                            error.message ||
-                            error.toString()
-                        );
+                            error.toString();
                     }
                 );
             },

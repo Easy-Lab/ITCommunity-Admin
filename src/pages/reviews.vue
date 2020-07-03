@@ -69,7 +69,12 @@
         <q-td :props="props">
           <div class="q-gutter-sm">
             <q-btn dense color="primary" icon="edit"/>
-            <q-btn dense color="red" icon="delete"/>
+            <q-btn
+              @click="deleteReviews(props.row.hash)"
+              dense
+              color="red"
+              icon="delete"
+            />
           </div>
         </q-td>
       </template>
@@ -260,15 +265,35 @@
                         return this.reviews
                     },
                     error => {
-                        this.user =
+                        this.reviews =
                             (error.response && error.response.data) ||
                             error.message ||
                             error.toString();
-                        console.log(
+                    }
+                );
+            },
+            deleteReviews(hash) {
+                return ReviewsService.deleteReviews(hash).then(
+                    response => {
+                        ReviewsService.getReviews().then(
+                            response => {
+                                this.reviews = response.data;
+                                this.$q.notify("Reviews deleted.");
+                                return this.reviews
+                            },
+                            error => {
+                                this.reviews =
+                                    (error.response && error.response.data) ||
+                                    error.message ||
+                                    error.toString();
+                            }
+                        )
+                    },
+                    error => {
+                        this.reviews =
                             (error.response && error.response.data) ||
                             error.message ||
-                            error.toString()
-                        );
+                            error.toString();
                     }
                 );
             },

@@ -109,11 +109,6 @@
                             (error.response && error.response.data) ||
                             error.message ||
                             error.toString();
-                        console.log(
-                            (error.response && error.response.data) ||
-                            error.message ||
-                            error.toString()
-                        );
                     }
                 );
             },
@@ -128,11 +123,6 @@
                             (error.response && error.response.data) ||
                             error.message ||
                             error.toString();
-                        console.log(
-                            (error.response && error.response.data) ||
-                            error.message ||
-                            error.toString()
-                        );
                     }
                 );
             },

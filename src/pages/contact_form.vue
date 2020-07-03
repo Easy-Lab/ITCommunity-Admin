@@ -72,7 +72,12 @@
         <q-td :props="props">
           <div class="q-gutter-sm">
             <q-btn dense color="primary" icon="edit"/>
-            <q-btn dense color="red" icon="delete"/>
+            <q-btn
+              @click="deleteContactForms(props.row.hash)"
+              dense
+              color="red"
+              icon="delete"
+            />
           </div>
         </q-td>
       </template>
@@ -207,7 +212,6 @@
                 return ContactFormsService.getContactForms().then(
                     response => {
                         this.contactForms = response.data;
-                        console.log(response.data)
                         return this.contactForms;
                     },
                     error => {
@@ -220,6 +224,31 @@
                             error.message ||
                             error.toString()
                         );
+                    }
+                );
+            },
+            deleteContactForms(hash) {
+                return ContactFormsService.deleteContactForms(hash).then(
+                    response => {
+                        ContactFormsService.getContactForms().then(
+                            response => {
+                                this.contactForms = response.data;
+                                this.$q.notify("Form deleted.");
+                                return this.contactForms
+                            },
+                            error => {
+                                this.contactForms =
+                                    (error.response && error.response.data) ||
+                                    error.message ||
+                                    error.toString();
+                            }
+                        )
+                    },
+                    error => {
+                        this.contactForms =
+                            (error.response && error.response.data) ||
+                            error.message ||
+                            error.toString();
                     }
                 );
             },

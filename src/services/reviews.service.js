@@ -11,6 +11,10 @@ class ReviewsService {
   getReviewsUsers() {
     return axios.get(API_URL + 'reviews?limit=0&expand=user', {headers: authHeader()});
   }
+
+  deleteReviews(hash) {
+    return axios.delete(API_URL + 'reviews/' + hash, {headers: authHeader()});
+  }
 }
 
 export default new ReviewsService();
